@@ -14,7 +14,7 @@ class AddToUbicacionesTable extends Migration
     public function up()
     {
         Schema::table('ubicaciones', function (Blueprint $table) {
-            $table->string('nombre', 60);
+            $table->string('nombre', 60)->nullable();
             $table->integer('cantidad')->default(0);
             $table->text('descripcion')->nullable();
         });
