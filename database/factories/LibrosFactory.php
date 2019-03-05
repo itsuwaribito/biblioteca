@@ -11,6 +11,7 @@ $factory->define(App\Libro::class, function (Faker $faker) {
         'publicacion' => $faker->date('Y'),
         'adquisicion' => $faker->dateTimeBetween('-5 years', 'now'),
         'observaciones' => $faker->text(100),
+        'cantidad' => $faker->numberBetween(10,25),
         'ubicaciones_id' => $faker->numberBetween(1,14)
     ];
 });

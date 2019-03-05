@@ -26,6 +26,7 @@ class Libro extends Model
         'publicacion',
         'adquisicion',
         'observaciones',
+        'cantidad',
         'estados_id',
         'ubicaciones_id'
     ];

@@ -22,7 +22,6 @@ class Ubicacion extends Model
         'estantes_id',
         'secciones_id',
         'nombre',
-        'cantidad',
         'descripcion'
     ];
 
