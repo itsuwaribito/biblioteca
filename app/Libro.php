@@ -18,15 +18,16 @@ class Libro extends Model
      *
      * @var array
      */
-    protected $attributes = [
-        'id',
+    protected $fillable = [
         'titulo',
         'autor',
         'editorial',
         'edicion',
         'publicacion',
         'adquisicion',
-        'observaciones'
+        'observaciones',
+        'estados_id',
+        'ubicaciones_id'
     ];
 
     /**

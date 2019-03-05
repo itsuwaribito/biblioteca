@@ -18,8 +18,7 @@ class Alumno extends Model
      *
      * @var array
      */
-    protected $attributes = [
-        'id',
+    protected $fillable = [
         'nombre',
         'apellido_paterno',
         'apellido_materno',

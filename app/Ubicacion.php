@@ -11,15 +11,16 @@ class Ubicacion extends Model
      *
      * @var string
      */
-    protected $table = 'estantes';
+    protected $table = 'ubicaciones';
 
     /**
      * Los atributos por default del modelo.
      *
      * @var array
      */
-    protected $attributes = [
-        'id',
+    protected $fillable = [
+        'estantes_id',
+        'secciones_id',
         'nombre',
         'cantidad',
         'descripcion'

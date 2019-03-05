@@ -18,9 +18,8 @@ class Estado extends Model
      *
      * @var array
      */
-    protected $attributes = [
-        'id',
-        'nombre',
+    protected $fillable = [
+        'nombre'
     ];
 
     /**

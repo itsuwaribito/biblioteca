@@ -18,8 +18,7 @@ class Prestamo extends Model
      *
      * @var array
      */
-    protected $attributes = [
-        'id',
+    protected $fillable = [
         'fecha_prestamo',
         'fecha_devolucion',
         'observaciones'

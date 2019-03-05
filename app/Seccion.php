@@ -18,8 +18,7 @@ class Seccion extends Model
      *
      * @var array
      */
-    protected $attributes = [
-        'id',
+    protected $fillable = [
         'nombre'
     ];
 }
