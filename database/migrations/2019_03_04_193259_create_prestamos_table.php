@@ -16,7 +16,7 @@ class CreatePrestamosTable extends Migration
         Schema::create('prestamos', function (Blueprint $table) {
             $table->bigIncrements('id');
             $table->timestamp('fecha_prestamo');
-            $table->timestamp('fecha_devosucion');
+            $table->timestamp('fecha_devolucion')->nullable();
             $table->text('observaciones');
             $table->timestamps();
 
