@@ -6,11 +6,7 @@
         <meta name="csrf-token" content="{{ csrf_token() }}">
 
         <title>{{ config('app.name') }}</title>
-
-        <!-- Fonts -->
-        {{--  <link href="https://fonts.googleapis.com/css?family=Nunito:200,600" rel="stylesheet">  --}}
-
-    <link rel="stylesheet" href="{{ asset('css/app.css') }}">
+        <link rel="stylesheet" href="{{ asset('css/app.css') }}">
       
     </head>
     <body>
@@ -53,7 +49,7 @@
                                 <v-list-tile-title>Libros</v-list-tile-title>
                             </v-list-tile-content>
                         </v-list-tile>
-                        <v-list-tile @@click="">
+                        <v-list-tile @@click="$router.push({ name: 'Alumnos'})">
                             <v-list-tile-action>
                                 <v-icon>people</v-icon>
                             </v-list-tile-action>

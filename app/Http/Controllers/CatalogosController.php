@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
 use App\Libro;
+use App\Alumno;
 
 class CatalogosController extends Controller
 {
@@ -19,5 +20,11 @@ class CatalogosController extends Controller
         }
 
         return $libros->get();
+    }
+
+    public function getAlumnos()
+    {
+        $alumnos = Alumno::all();
+        return $alumnos;
     }
 }

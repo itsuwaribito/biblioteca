@@ -53,12 +53,12 @@
                     <span class="headline">Alta de libro</span>
                 </v-card-title>
                 <v-card-text>
-                    <v-container grid-list-md>
-                        <v-layout wrap>
-                            <v-flex sm6 md12>
+                    <v-container grid-list-lg>
+                        <v-layout wrap >
+                            <v-flex xs12>
                                 <v-text-field label="Titulo"></v-text-field>
                             </v-flex>
-                            <v-flex sm6 md8>
+                            <v-flex xs12 md8>
                                 <v-text-field label="Autor"></v-text-field>
                             </v-flex>
                             <v-flex sm6 md2>
@@ -102,7 +102,7 @@
                                     ></v-date-picker>
                                 </v-menu>
                             </v-flex>
-                            <v-flex sm6 md12>
+                            <v-flex xs12 sm12 md12>
                                 <v-textarea
                                     name="input-7-1"
                                     label="Observaciones"
