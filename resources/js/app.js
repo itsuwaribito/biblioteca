@@ -21,6 +21,6 @@ const app = new Vue({
     el: '#app',
     router,
     data: () => ({
-        drawer: true
+        drawer: false
       }),
 });

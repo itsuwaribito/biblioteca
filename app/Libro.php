@@ -53,6 +53,6 @@ class Libro extends Model
      */
     public function prestamos()
     {
-        return $this->hasMany('App\Prestamo');
+        return $this->hasMany('App\Prestamo', 'libros_id');
     }
 }
