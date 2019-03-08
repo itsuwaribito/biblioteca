@@ -20,4 +20,6 @@ Route::middleware('auth:api')->get('/user', function (Request $request) {
 Route::prefix('catalogos')->group(function() {
     Route::get('libros', 'CatalogosController@getLibros');
     Route::get('alumnos', 'CatalogosController@getAlumnos');
+    Route::get('secciones', 'CatalogosController@getSecciones');
+    Route::get('estantes', 'CatalogosController@getEstantes');
 });

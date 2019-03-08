@@ -20,16 +20,7 @@
                 </v-flex>
                 <v-flex pa-4 d-flex xs12 sm6 md4 lg3 v-for="libro in bookList" :key="libro.id">
                     <v-card width="350" light color="#E7E7E7">
-                        <v-btn
-                            color="pink"
-                            dark
-                            small
-                            absolute
-                            top
-                            left
-                            >
-                                <v-icon>add</v-icon>
-                            </v-btn>
+
                         <v-img
                             height="250"
                             

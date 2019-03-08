@@ -58,13 +58,13 @@
                                 <v-list-tile-title>Alumnos</v-list-tile-title>
                             </v-list-tile-content>
                         </v-list-tile>
-                        <v-list-tile @@click="">
+                        <v-list-tile @@click="$router.push({ name: 'Estantes'})">
                             <v-list-tile-action>
                                 <v-icon>apps</v-icon>
                             </v-list-tile-action>
                         
                             <v-list-tile-content>
-                                <v-list-tile-title>Ubicaciones</v-list-tile-title>
+                                <v-list-tile-title>Estantes</v-list-tile-title>
                             </v-list-tile-content>
                         </v-list-tile>
                     </v-list>
