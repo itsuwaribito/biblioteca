@@ -2512,10 +2512,58 @@ function _asyncToGenerator(fn) { return function () { var self = this, args = ar
 //
 //
 //
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
 /* harmony default export */ __webpack_exports__["default"] = ({
   data: function data() {
     return {
       libros: [],
+      ubicaciones: [],
       headers: [{
         text: "Titulo",
         value: "titulo",
@@ -2537,26 +2585,40 @@ function _asyncToGenerator(fn) { return function () { var self = this, args = ar
         value: "observaciones",
         sortable: false
       }, {
-        text: "En exitencia",
+        text: "Total de copias",
+        value: "cantidad",
+        sortable: false
+      }, {
+        text: "Acciones",
         value: "cantidad",
         sortable: false
       }],
       search: '',
       dialog: false,
-      dates: {
-        adquisicion: new Date().toISOString().substr(0, 10)
+      formData: {
+        adquisicion: new Date().toISOString().substr(0, 10),
+        titulo: '',
+        autor: '',
+        edicion: '',
+        cantidad: '',
+        editorial: '',
+        publicacion: '',
+        observaciones: '',
+        ubicaciones_id: null
       },
       menu: false,
       publicacion: '',
-      observaciones: ''
+      observaciones: '',
+      loading: false
     };
   },
   mounted: function mounted() {
     this.fillBookList();
+    this.getUbicaciones();
   },
   computed: {
     computedFormatedDate: function computedFormatedDate() {
-      return this.formatedDate(this.dates.adquisicion);
+      return this.formatedDate(this.formData.adquisicion);
     }
   },
   methods: {
@@ -2569,19 +2631,20 @@ function _asyncToGenerator(fn) { return function () { var self = this, args = ar
           while (1) {
             switch (_context.prev = _context.next) {
               case 0:
-                _context.next = 2;
+                this.loading = true;
+                _context.next = 3;
                 return axios.get('/api/catalogos/libros', {
                   params: {
-                    search: this.search,
                     all: true
                   }
                 });
 
-              case 2:
+              case 3:
                 response = _context.sent;
                 this.libros = response.data;
+                this.loading = false;
 
-              case 4:
+              case 6:
               case "end":
                 return _context.stop();
             }
@@ -2595,15 +2658,110 @@ function _asyncToGenerator(fn) { return function () { var self = this, args = ar
 
       return fillBookList;
     }(),
+    getUbicaciones: function () {
+      var _getUbicaciones = _asyncToGenerator(
+      /*#__PURE__*/
+      _babel_runtime_regenerator__WEBPACK_IMPORTED_MODULE_0___default.a.mark(function _callee2() {
+        var response;
+        return _babel_runtime_regenerator__WEBPACK_IMPORTED_MODULE_0___default.a.wrap(function _callee2$(_context2) {
+          while (1) {
+            switch (_context2.prev = _context2.next) {
+              case 0:
+                _context2.next = 2;
+                return axios.get('/api/catalogos/ubicaciones');
+
+              case 2:
+                response = _context2.sent;
+                this.ubicaciones = response.data;
+
+              case 4:
+              case "end":
+                return _context2.stop();
+            }
+          }
+        }, _callee2, this);
+      }));
+
+      function getUbicaciones() {
+        return _getUbicaciones.apply(this, arguments);
+      }
+
+      return getUbicaciones;
+    }(),
     altaLibro: function altaLibro() {
-      console.log('nuevo libro');
       this.dialog = true;
+      this.formData = {
+        adquisicion: new Date().toISOString().substr(0, 10),
+        titulo: '',
+        autor: '',
+        edicion: '',
+        cantidad: '',
+        editorial: '',
+        publicacion: '',
+        observaciones: ''
+      };
     },
     formatedDate: function formatedDate(dateString) {
       var aux = dateString.split("-");
       var date = new Date(aux[0], aux[1], aux[2]);
       return "".concat(date.getDate().toString().padStart(2, "0"), "/").concat(date.getMonth() + 1, "/").concat(date.getFullYear());
-    }
+    },
+    editItem: function editItem(alumno) {
+      this.dialog = true;
+      alumno.adquisicion = new Date(alumno.adquisicion).toISOString().substr(0, 10);
+      this.formData = alumno;
+      console.log(alumno);
+    },
+    guardarLibro: function () {
+      var _guardarLibro = _asyncToGenerator(
+      /*#__PURE__*/
+      _babel_runtime_regenerator__WEBPACK_IMPORTED_MODULE_0___default.a.mark(function _callee3() {
+        var reponse;
+        return _babel_runtime_regenerator__WEBPACK_IMPORTED_MODULE_0___default.a.wrap(function _callee3$(_context3) {
+          while (1) {
+            switch (_context3.prev = _context3.next) {
+              case 0:
+                this.loading = true;
+                reponse = null;
+
+                if (!this.formData.hasOwnProperty('id')) {
+                  _context3.next = 8;
+                  break;
+                }
+
+                _context3.next = 5;
+                return axios.put("/api/libros/".concat(this.formData.id), this.formData);
+
+              case 5:
+                reponse = _context3.sent;
+                _context3.next = 11;
+                break;
+
+              case 8:
+                _context3.next = 10;
+                return axios.post('/api/libros', this.formData);
+
+              case 10:
+                reponse = _context3.sent;
+
+              case 11:
+                this.fillBookList();
+                this.dialog = false;
+
+              case 13:
+              case "end":
+                return _context3.stop();
+            }
+          }
+        }, _callee3, this);
+      }));
+
+      function guardarLibro() {
+        return _guardarLibro.apply(this, arguments);
+      }
+
+      return guardarLibro;
+    }()
   }
 });
 
@@ -35508,7 +35666,32 @@ var render = function() {
                         _vm._v(" "),
                         _c("td", [_vm._v(_vm._s(props.item.observaciones))]),
                         _vm._v(" "),
-                        _c("td", [_vm._v(_vm._s(props.item.cantidad))])
+                        _c("td", [_vm._v(_vm._s(props.item.cantidad))]),
+                        _vm._v(" "),
+                        _c(
+                          "td",
+                          { staticClass: "justify-center layout " },
+                          [
+                            _c(
+                              "v-icon",
+                              {
+                                staticClass: "ma-auto",
+                                attrs: { small: "" },
+                                on: {
+                                  click: function($event) {
+                                    return _vm.editItem(props.item)
+                                  }
+                                }
+                              },
+                              [
+                                _vm._v(
+                                  "\n                            edit\n                        "
+                                )
+                              ]
+                            )
+                          ],
+                          1
+                        )
                       ]
                     }
                   }
@@ -35581,7 +35764,16 @@ var render = function() {
                             "v-flex",
                             { attrs: { xs12: "" } },
                             [
-                              _c("v-text-field", { attrs: { label: "Titulo" } })
+                              _c("v-text-field", {
+                                attrs: { label: "Titulo" },
+                                model: {
+                                  value: _vm.formData.titulo,
+                                  callback: function($$v) {
+                                    _vm.$set(_vm.formData, "titulo", $$v)
+                                  },
+                                  expression: "formData.titulo"
+                                }
+                              })
                             ],
                             1
                           ),
@@ -35589,7 +35781,18 @@ var render = function() {
                           _c(
                             "v-flex",
                             { attrs: { xs12: "", md8: "" } },
-                            [_c("v-text-field", { attrs: { label: "Autor" } })],
+                            [
+                              _c("v-text-field", {
+                                attrs: { label: "Autor" },
+                                model: {
+                                  value: _vm.formData.autor,
+                                  callback: function($$v) {
+                                    _vm.$set(_vm.formData, "autor", $$v)
+                                  },
+                                  expression: "formData.autor"
+                                }
+                              })
+                            ],
                             1
                           ),
                           _vm._v(" "),
@@ -35598,7 +35801,14 @@ var render = function() {
                             { attrs: { sm6: "", md2: "" } },
                             [
                               _c("v-text-field", {
-                                attrs: { label: "Edicion" }
+                                attrs: { label: "Edicion" },
+                                model: {
+                                  value: _vm.formData.edicion,
+                                  callback: function($$v) {
+                                    _vm.$set(_vm.formData, "edicion", $$v)
+                                  },
+                                  expression: "formData.edicion"
+                                }
                               })
                             ],
                             1
@@ -35612,7 +35822,14 @@ var render = function() {
                                 attrs: {
                                   mask: "###",
                                   messages: "Solo se permiten numeros",
-                                  label: "En existencia"
+                                  label: "Total de copias"
+                                },
+                                model: {
+                                  value: _vm.formData.cantidad,
+                                  callback: function($$v) {
+                                    _vm.$set(_vm.formData, "cantidad", $$v)
+                                  },
+                                  expression: "formData.cantidad"
                                 }
                               })
                             ],
@@ -35624,7 +35841,14 @@ var render = function() {
                             { attrs: { sm6: "", md4: "" } },
                             [
                               _c("v-text-field", {
-                                attrs: { label: "Editorial" }
+                                attrs: { label: "Editorial" },
+                                model: {
+                                  value: _vm.formData.editorial,
+                                  callback: function($$v) {
+                                    _vm.$set(_vm.formData, "editorial", $$v)
+                                  },
+                                  expression: "formData.editorial"
+                                }
                               })
                             ],
                             1
@@ -35639,6 +35863,13 @@ var render = function() {
                                   mask: "####",
                                   messages: "Solo se permiten numeros",
                                   label: "Año de publicacion"
+                                },
+                                model: {
+                                  value: _vm.formData.publicacion,
+                                  callback: function($$v) {
+                                    _vm.$set(_vm.formData, "publicacion", $$v)
+                                  },
+                                  expression: "formData.publicacion"
                                 }
                               })
                             ],
@@ -35712,11 +35943,15 @@ var render = function() {
                                       }
                                     },
                                     model: {
-                                      value: _vm.dates.adquisicion,
+                                      value: _vm.formData.adquisicion,
                                       callback: function($$v) {
-                                        _vm.$set(_vm.dates, "adquisicion", $$v)
+                                        _vm.$set(
+                                          _vm.formData,
+                                          "adquisicion",
+                                          $$v
+                                        )
                                       },
-                                      expression: "dates.adquisicion"
+                                      expression: "formData.adquisicion"
                                     }
                                   })
                                 ],
@@ -35728,7 +35963,7 @@ var render = function() {
                           _vm._v(" "),
                           _c(
                             "v-flex",
-                            { attrs: { xs12: "", sm12: "", md12: "" } },
+                            { attrs: { xs12: "", sm7: "", md9: "" } },
                             [
                               _c("v-textarea", {
                                 attrs: {
@@ -35736,11 +35971,38 @@ var render = function() {
                                   label: "Observaciones"
                                 },
                                 model: {
-                                  value: _vm.observaciones,
+                                  value: _vm.formData.observaciones,
                                   callback: function($$v) {
-                                    _vm.observaciones = $$v
+                                    _vm.$set(_vm.formData, "observaciones", $$v)
                                   },
-                                  expression: "observaciones"
+                                  expression: "formData.observaciones"
+                                }
+                              })
+                            ],
+                            1
+                          ),
+                          _vm._v(" "),
+                          _c(
+                            "v-flex",
+                            { attrs: { xs12: "", sm5: "", md3: "" } },
+                            [
+                              _c("v-select", {
+                                attrs: {
+                                  items: _vm.ubicaciones,
+                                  label: "Ubicacion",
+                                  "item-value": "id",
+                                  "item-text": "nombre"
+                                },
+                                model: {
+                                  value: _vm.formData.ubicaciones_id,
+                                  callback: function($$v) {
+                                    _vm.$set(
+                                      _vm.formData,
+                                      "ubicaciones_id",
+                                      $$v
+                                    )
+                                  },
+                                  expression: "formData.ubicaciones_id"
                                 }
                               })
                             ],
@@ -35764,14 +36026,31 @@ var render = function() {
                   _c(
                     "v-btn",
                     {
-                      attrs: { color: "blue darken-1", flat: "" },
+                      attrs: {
+                        color: "blue darken-1",
+                        flat: "",
+                        loading: _vm.loading
+                      },
                       on: {
                         click: function($event) {
                           _vm.dialog = !_vm.dialog
                         }
                       }
                     },
-                    [_vm._v("Cerrar")]
+                    [_vm._v("Cancelar")]
+                  ),
+                  _vm._v(" "),
+                  _c(
+                    "v-btn",
+                    {
+                      attrs: {
+                        color: "blue darken-1",
+                        flat: "",
+                        loading: _vm.loading
+                      },
+                      on: { click: _vm.guardarLibro }
+                    },
+                    [_vm._v("Guardar")]
                   )
                 ],
                 1

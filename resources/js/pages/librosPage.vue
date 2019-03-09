@@ -29,6 +29,15 @@
                         <td>{{ props.item.edicion }}</td>
                         <td>{{ props.item.observaciones }}</td>
                         <td>{{ props.item.cantidad }}</td>
+                        <td class="justify-center layout ">
+                            <v-icon
+                                small
+                                class="ma-auto"
+                                @click="editItem(props.item)"
+                            >
+                                edit
+                            </v-icon>
+                        </td>
                     </template>
                 </v-data-table>
             <v-fab-transition>
@@ -56,22 +65,42 @@
                     <v-container grid-list-lg>
                         <v-layout wrap >
                             <v-flex xs12>
-                                <v-text-field label="Titulo"></v-text-field>
+                                <v-text-field
+                                    label="Titulo"
+                                    v-model="formData.titulo"
+                                ></v-text-field>
                             </v-flex>
                             <v-flex xs12 md8>
-                                <v-text-field label="Autor"></v-text-field>
+                                <v-text-field
+                                    label="Autor"
+                                    v-model="formData.autor"
+                                ></v-text-field>
                             </v-flex>
                             <v-flex sm6 md2>
-                                <v-text-field label="Edicion"></v-text-field>
+                                <v-text-field
+                                    label="Edicion"
+                                    v-model="formData.edicion"
+                                ></v-text-field>
                             </v-flex>
                             <v-flex sm6 md2>
-                                <v-text-field mask="###" messages="Solo se permiten numeros" label="En existencia"></v-text-field>
+                                <v-text-field
+                                    mask="###"
+                                    messages="Solo se permiten numeros"
+                                    label="Total de copias"
+                                    v-model="formData.cantidad"
+                                ></v-text-field>
                             </v-flex>
                             <v-flex sm6 md4>
-                                <v-text-field label="Editorial"></v-text-field>
+                                <v-text-field
+                                    label="Editorial"
+                                    v-model="formData.editorial"
+                                ></v-text-field>
                             </v-flex>
                             <v-flex sm6 md4>
-                                <v-text-field mask="####" messages="Solo se permiten numeros" label="Año de publicacion"></v-text-field>
+                                <v-text-field mask="####" messages="Solo se permiten numeros"
+                                    label="Año de publicacion"
+                                    v-model="formData.publicacion"
+                                ></v-text-field>
                             </v-flex>
                             <v-flex sm6 md4>
                                 <v-menu
@@ -95,26 +124,44 @@
                                         ></v-text-field>
                                     </template>
                                     <v-date-picker
-                                        v-model="dates.adquisicion"
+                                        v-model="formData.adquisicion"
                                         locale="es"
                                         no-title
                                         @input="menu = false"
                                     ></v-date-picker>
                                 </v-menu>
                             </v-flex>
-                            <v-flex xs12 sm12 md12>
+                            <v-flex xs12 sm7 md9>
                                 <v-textarea
                                     name="input-7-1"
                                     label="Observaciones"
-                                    v-model="observaciones"
+                                    v-model="formData.observaciones"
                                 ></v-textarea>
+                            </v-flex>
+                            <v-flex xs12 sm5 md3>
+                                <v-select
+                                    :items="ubicaciones"
+                                    label="Ubicacion"
+                                    item-value="id"
+                                    item-text="nombre"
+                                    v-model="formData.ubicaciones_id"
+                                ></v-select>
                             </v-flex>
                         </v-layout>
                     </v-container>
                 </v-card-text>
                 <v-card-actions>
                     <v-spacer></v-spacer>
-                    <v-btn color="blue darken-1" flat @click="dialog = !dialog">Cerrar</v-btn>
+                    <v-btn color="blue darken-1"
+                        flat
+                        @click="dialog = !dialog"
+                        :loading="loading"
+                    >Cancelar</v-btn>
+                    <v-btn color="blue darken-1"
+                        flat
+                        @click="guardarLibro"
+                        :loading="loading"
+                    >Guardar</v-btn>
                 </v-card-actions>
             </v-card>
         </v-dialog>
@@ -126,6 +173,7 @@ export default {
     data() {
         return {
             libros: [],
+            ubicaciones: [],
             headers: [
                 {
                     text: "Titulo",
@@ -153,48 +201,96 @@ export default {
                     sortable: false
                 },
                 {
-                    text: "En exitencia",
+                    text: "Total de copias",
+                    value: "cantidad",
+                    sortable: false
+                },
+                {
+                    text: "Acciones",
                     value: "cantidad",
                     sortable: false
                 },
             ],
             search: '',
             dialog: false,
-            dates: {
+            formData: {
                 adquisicion: new Date().toISOString().substr(0, 10),
+                titulo: '',
+                autor: '',
+                edicion: '',
+                cantidad: '',
+                editorial: '',
+                publicacion: '',
+                observaciones: '',
+                ubicaciones_id: null
             },
             menu: false,
             publicacion: '',
-            observaciones: ''
+            observaciones: '',
+            loading: false,
         }
     },
     mounted() {
 
         this.fillBookList()
+        this.getUbicaciones()
     },
     computed: {
         computedFormatedDate() {
-            return this.formatedDate(this.dates.adquisicion)    
+            return this.formatedDate(this.formData.adquisicion)    
         }
     },
     methods: {
         async fillBookList() {
+            this.loading = true
             const response = await axios.get('/api/catalogos/libros', {
                         params: {
-                            search: this.search,
                             all: true
                         }
                     })
             this.libros = response.data
+            this.loading = false
+            
+        },
+        async getUbicaciones() {
+            const response = await axios.get('/api/catalogos/ubicaciones')
+            this.ubicaciones = response.data
         },
         altaLibro() {
-            console.log('nuevo libro')
             this.dialog = true
+            this.formData = {
+                adquisicion: new Date().toISOString().substr(0, 10),
+                titulo: '',
+                autor: '',
+                edicion: '',
+                cantidad: '',
+                editorial: '',
+                publicacion: '',
+                observaciones: '',
+            }
         },
         formatedDate (dateString) {
             var aux = dateString.split("-")
             var date = new Date(aux[0],aux[1],aux[2])
             return `${date.getDate().toString().padStart(2, "0")}/${(date.getMonth() + 1)}/${date.getFullYear()}`
+        },
+        editItem(alumno) {
+            this.dialog = true
+            alumno.adquisicion = new Date(alumno.adquisicion).toISOString().substr(0, 10)
+            this.formData = alumno
+            console.log(alumno)
+            
+        },
+        async guardarLibro() {
+            this.loading = true
+            var reponse = null
+            if(this.formData.hasOwnProperty('id')) {
+                reponse = await axios.put(`/api/libros/${this.formData.id}`,this.formData)
+            } else {
+                reponse = await axios.post('/api/libros',this.formData)
+            }
+            this.fillBookList()
+            this.dialog = false
         }
     }
 }

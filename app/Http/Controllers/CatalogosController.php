@@ -7,6 +7,7 @@ use App\Libro;
 use App\Alumno;
 use App\Seccion;
 use App\Estante;
+use App\Ubicacion;
 
 class CatalogosController extends Controller
 {
@@ -48,5 +49,10 @@ class CatalogosController extends Controller
                             ->get(['estantes.*']);
         }
         return $data;
+    }
+
+    public function getUbicaciones()
+    {
+        return Ubicacion::with('estante','seccion')->get();
     }
 }
