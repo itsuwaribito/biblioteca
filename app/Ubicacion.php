@@ -38,7 +38,7 @@ class Ubicacion extends Model
      */
     public function estante()
     {
-        return $this->belongsTo('App\Estante');
+        return $this->belongsTo('App\Estante', 'estantes_id');
     }
 
     /**
@@ -46,6 +46,6 @@ class Ubicacion extends Model
      */
     public function seccion()
     {
-        return $this->belongsTo('App\Seccion');
+        return $this->belongsTo('App\Seccion', 'secciones_id');
     }
 }
