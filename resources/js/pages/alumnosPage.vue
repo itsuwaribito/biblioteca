@@ -53,22 +53,36 @@
                  <v-container grid-list-lg>
                         <v-layout wrap>
                             <v-flex xs12 sm12>
-                                <v-text-field label="Matricula"></v-text-field>
+                                <v-text-field
+                                    label="Matricula"
+                                    :mask="'nnnnnnnnnnnnnnn'"
+                                    v-model="formData.numero_control"
+                                ></v-text-field>
                             </v-flex>
                             <v-flex xs12 sm6 md4>
-                                <v-text-field label="Nombre(s)"></v-text-field>
+                                <v-text-field
+                                    label="Nombre(s)"
+                                    v-model="formData.nombre"
+                                ></v-text-field>
                             </v-flex>
                             <v-flex xs12 sm6 md4>
-                                <v-text-field label="Apellido parterno"></v-text-field>
+                                <v-text-field
+                                    label="Apellido parterno"
+                                    v-model="formData.apellido_paterno"
+                                ></v-text-field>
                             </v-flex>
                             <v-flex xs12 sm6 md4>
-                                <v-text-field label="Apellido materno"></v-text-field>
+                                <v-text-field
+                                    label="Apellido materno"
+                                    v-model="formData.apellido_materno"
+                                ></v-text-field>
                             </v-flex>
                         </v-layout>
                  </v-container>
                 <v-card-actions>
                     <v-spacer></v-spacer>
-                    <v-btn color="blue darken-1" flat @click="dialog = !dialog">Cerrar</v-btn>
+                    <v-btn color="blue darken-1" flat @click="dialog = !dialog">Cancelar</v-btn>
+                    <v-btn color="blue darken-1" flat :loading="isLoading" @click="saveAlumno">Guardar</v-btn>
                 </v-card-actions>
             </v-card>
         </v-dialog>
@@ -105,19 +119,37 @@ export default {
                     sortable: false
                 },
             ],
+            formData: {
+                numero_control: '',
+                nombre: '',
+                apellido_paterno: '',
+                apellido_materno: ''
+            },
             alumnos:[],
             search: '',
-            dialog: false
+            dialog: false,
+            isLoading: false
         }
     },
     methods:{
         async getAlumnos() {
+            this.isLoading = true
             const response = await axios.get('/api/catalogos/alumnos')
             this.alumnos = response.data
+            this.isLoading = false
         },
         altaAlumno() {
             this.dialog = true
+        },
+        async saveAlumno() {
+            this.isLoading = true
+            const response = await axios.post('/api/alumnos', this.formData)
+
+            this.dialog = false
+            this.getAlumnos()
+            console.log(response.data)
         }
+        
     }
 }
 </script>

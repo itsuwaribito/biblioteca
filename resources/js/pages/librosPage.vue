@@ -159,7 +159,7 @@ export default {
                 },
             ],
             search: '',
-            dialog: true,
+            dialog: false,
             dates: {
                 adquisicion: new Date().toISOString().substr(0, 10),
             },

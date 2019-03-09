@@ -1860,6 +1860,20 @@ function _asyncToGenerator(fn) { return function () { var self = this, args = ar
 //
 //
 //
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
 /* harmony default export */ __webpack_exports__["default"] = ({
   created: function created() {
     this.getAlumnos();
@@ -1883,9 +1897,16 @@ function _asyncToGenerator(fn) { return function () { var self = this, args = ar
         value: 'apellido_materno',
         sortable: false
       }],
+      formData: {
+        numero_control: '',
+        nombre: '',
+        apellido_paterno: '',
+        apellido_materno: ''
+      },
       alumnos: [],
       search: '',
-      dialog: false
+      dialog: false,
+      isLoading: false
     };
   },
   methods: {
@@ -1898,14 +1919,16 @@ function _asyncToGenerator(fn) { return function () { var self = this, args = ar
           while (1) {
             switch (_context.prev = _context.next) {
               case 0:
-                _context.next = 2;
+                this.isLoading = true;
+                _context.next = 3;
                 return axios.get('/api/catalogos/alumnos');
 
-              case 2:
+              case 3:
                 response = _context.sent;
                 this.alumnos = response.data;
+                this.isLoading = false;
 
-              case 4:
+              case 6:
               case "end":
                 return _context.stop();
             }
@@ -1921,7 +1944,40 @@ function _asyncToGenerator(fn) { return function () { var self = this, args = ar
     }(),
     altaAlumno: function altaAlumno() {
       this.dialog = true;
-    }
+    },
+    saveAlumno: function () {
+      var _saveAlumno = _asyncToGenerator(
+      /*#__PURE__*/
+      _babel_runtime_regenerator__WEBPACK_IMPORTED_MODULE_0___default.a.mark(function _callee2() {
+        var response;
+        return _babel_runtime_regenerator__WEBPACK_IMPORTED_MODULE_0___default.a.wrap(function _callee2$(_context2) {
+          while (1) {
+            switch (_context2.prev = _context2.next) {
+              case 0:
+                this.isLoading = true;
+                _context2.next = 3;
+                return axios.post('/api/alumnos', this.formData);
+
+              case 3:
+                response = _context2.sent;
+                this.dialog = false;
+                this.getAlumnos();
+                console.log(response.data);
+
+              case 7:
+              case "end":
+                return _context2.stop();
+            }
+          }
+        }, _callee2, this);
+      }));
+
+      function saveAlumno() {
+        return _saveAlumno.apply(this, arguments);
+      }
+
+      return saveAlumno;
+    }()
   }
 });
 
@@ -2486,7 +2542,7 @@ function _asyncToGenerator(fn) { return function () { var self = this, args = ar
         sortable: false
       }],
       search: '',
-      dialog: true,
+      dialog: false,
       dates: {
         adquisicion: new Date().toISOString().substr(0, 10)
       },
@@ -34796,23 +34852,19 @@ var render = function() {
                       _c(
                         "v-flex",
                         { attrs: { xs12: "", sm12: "" } },
-                        [_c("v-text-field", { attrs: { label: "Matricula" } })],
-                        1
-                      ),
-                      _vm._v(" "),
-                      _c(
-                        "v-flex",
-                        { attrs: { xs12: "", sm6: "", md4: "" } },
-                        [_c("v-text-field", { attrs: { label: "Nombre(s)" } })],
-                        1
-                      ),
-                      _vm._v(" "),
-                      _c(
-                        "v-flex",
-                        { attrs: { xs12: "", sm6: "", md4: "" } },
                         [
                           _c("v-text-field", {
-                            attrs: { label: "Apellido parterno" }
+                            attrs: {
+                              label: "Matricula",
+                              mask: "nnnnnnnnnnnnnnn"
+                            },
+                            model: {
+                              value: _vm.formData.numero_control,
+                              callback: function($$v) {
+                                _vm.$set(_vm.formData, "numero_control", $$v)
+                              },
+                              expression: "formData.numero_control"
+                            }
                           })
                         ],
                         1
@@ -34823,7 +34875,50 @@ var render = function() {
                         { attrs: { xs12: "", sm6: "", md4: "" } },
                         [
                           _c("v-text-field", {
-                            attrs: { label: "Apellido materno" }
+                            attrs: { label: "Nombre(s)" },
+                            model: {
+                              value: _vm.formData.nombre,
+                              callback: function($$v) {
+                                _vm.$set(_vm.formData, "nombre", $$v)
+                              },
+                              expression: "formData.nombre"
+                            }
+                          })
+                        ],
+                        1
+                      ),
+                      _vm._v(" "),
+                      _c(
+                        "v-flex",
+                        { attrs: { xs12: "", sm6: "", md4: "" } },
+                        [
+                          _c("v-text-field", {
+                            attrs: { label: "Apellido parterno" },
+                            model: {
+                              value: _vm.formData.apellido_paterno,
+                              callback: function($$v) {
+                                _vm.$set(_vm.formData, "apellido_paterno", $$v)
+                              },
+                              expression: "formData.apellido_paterno"
+                            }
+                          })
+                        ],
+                        1
+                      ),
+                      _vm._v(" "),
+                      _c(
+                        "v-flex",
+                        { attrs: { xs12: "", sm6: "", md4: "" } },
+                        [
+                          _c("v-text-field", {
+                            attrs: { label: "Apellido materno" },
+                            model: {
+                              value: _vm.formData.apellido_materno,
+                              callback: function($$v) {
+                                _vm.$set(_vm.formData, "apellido_materno", $$v)
+                              },
+                              expression: "formData.apellido_materno"
+                            }
                           })
                         ],
                         1
@@ -34850,7 +34945,20 @@ var render = function() {
                         }
                       }
                     },
-                    [_vm._v("Cerrar")]
+                    [_vm._v("Cancelar")]
+                  ),
+                  _vm._v(" "),
+                  _c(
+                    "v-btn",
+                    {
+                      attrs: {
+                        color: "blue darken-1",
+                        flat: "",
+                        loading: _vm.isLoading
+                      },
+                      on: { click: _vm.saveAlumno }
+                    },
+                    [_vm._v("Guardar")]
                   )
                 ],
                 1
