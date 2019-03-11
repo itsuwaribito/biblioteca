@@ -1874,6 +1874,15 @@ function _asyncToGenerator(fn) { return function () { var self = this, args = ar
 //
 //
 //
+//
+//
+//
+//
+//
+//
+//
+//
+//
 /* harmony default export */ __webpack_exports__["default"] = ({
   created: function created() {
     this.getAlumnos();
@@ -1895,6 +1904,10 @@ function _asyncToGenerator(fn) { return function () { var self = this, args = ar
       }, {
         text: 'Apellido materno',
         value: 'apellido_materno',
+        sortable: false
+      }, {
+        text: "Acciones",
+        value: "nombre",
         sortable: false
       }],
       formData: {
@@ -1944,6 +1957,16 @@ function _asyncToGenerator(fn) { return function () { var self = this, args = ar
     }(),
     altaAlumno: function altaAlumno() {
       this.dialog = true;
+      this.formData = {
+        numero_control: '',
+        nombre: '',
+        apellido_paterno: '',
+        apellido_materno: ''
+      };
+    },
+    editItem: function editItem(alumno) {
+      this.dialog = true;
+      this.formData = alumno;
     },
     saveAlumno: function () {
       var _saveAlumno = _asyncToGenerator(
@@ -1955,16 +1978,33 @@ function _asyncToGenerator(fn) { return function () { var self = this, args = ar
             switch (_context2.prev = _context2.next) {
               case 0:
                 this.isLoading = true;
-                _context2.next = 3;
+                response = null;
+
+                if (!this.formData.hasOwnProperty('id')) {
+                  _context2.next = 8;
+                  break;
+                }
+
+                _context2.next = 5;
+                return axios.put("/api/alumnos/".concat(this.formData.id), this.formData);
+
+              case 5:
+                response = _context2.sent;
+                _context2.next = 11;
+                break;
+
+              case 8:
+                _context2.next = 10;
                 return axios.post('/api/alumnos', this.formData);
 
-              case 3:
+              case 10:
                 response = _context2.sent;
+
+              case 11:
                 this.dialog = false;
                 this.getAlumnos();
-                console.log(response.data);
 
-              case 7:
+              case 13:
               case "end":
                 return _context2.stop();
             }
@@ -2000,6 +2040,32 @@ function asyncGeneratorStep(gen, resolve, reject, _next, _throw, key, arg) { try
 
 function _asyncToGenerator(fn) { return function () { var self = this, args = arguments; return new Promise(function (resolve, reject) { var gen = fn.apply(self, args); function _next(value) { asyncGeneratorStep(gen, resolve, reject, _next, _throw, "next", value); } function _throw(err) { asyncGeneratorStep(gen, resolve, reject, _next, _throw, "throw", err); } _next(undefined); }); }; }
 
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
 //
 //
 //
@@ -2208,7 +2274,40 @@ function _asyncToGenerator(fn) { return function () { var self = this, args = ar
     },
     seleccionar: function seleccionar(estante) {
       estante.isSelected = true;
-    }
+    },
+    saveSelection: function () {
+      var _saveSelection = _asyncToGenerator(
+      /*#__PURE__*/
+      _babel_runtime_regenerator__WEBPACK_IMPORTED_MODULE_0___default.a.mark(function _callee4() {
+        var response;
+        return _babel_runtime_regenerator__WEBPACK_IMPORTED_MODULE_0___default.a.wrap(function _callee4$(_context4) {
+          while (1) {
+            switch (_context4.prev = _context4.next) {
+              case 0:
+                _context4.next = 2;
+                return axios.put("/api/ubicaciones/".concat(this.seccion), {
+                  disponibles: this.disponibles,
+                  seleccionados: this.seleccionados
+                });
+
+              case 2:
+                response = _context4.sent;
+                console.log(response);
+
+              case 4:
+              case "end":
+                return _context4.stop();
+            }
+          }
+        }, _callee4, this);
+      }));
+
+      function saveSelection() {
+        return _saveSelection.apply(this, arguments);
+      }
+
+      return saveSelection;
+    }()
   },
   watch: {
     seccion: function seccion() {
@@ -34941,7 +35040,32 @@ var render = function() {
                         _vm._v(" "),
                         _c("td", [_vm._v(_vm._s(props.item.apellido_paterno))]),
                         _vm._v(" "),
-                        _c("td", [_vm._v(_vm._s(props.item.apellido_materno))])
+                        _c("td", [_vm._v(_vm._s(props.item.apellido_materno))]),
+                        _vm._v(" "),
+                        _c(
+                          "td",
+                          { staticClass: "justify-center layout " },
+                          [
+                            _c(
+                              "v-icon",
+                              {
+                                staticClass: "ma-auto",
+                                attrs: { small: "" },
+                                on: {
+                                  click: function($event) {
+                                    return _vm.editItem(props.item)
+                                  }
+                                }
+                              },
+                              [
+                                _vm._v(
+                                  "\n                            edit\n                        "
+                                )
+                              ]
+                            )
+                          ],
+                          1
+                        )
                       ]
                     }
                   }
@@ -35206,6 +35330,32 @@ var render = function() {
             [
               _c(
                 "v-flex",
+                { attrs: { sm12: "" } },
+                [
+                  _c(
+                    "v-alert",
+                    {
+                      staticClass: "mb-3",
+                      attrs: { value: true, type: "warning" }
+                    },
+                    [
+                      _vm._v(
+                        "\n                    This is a warning alert.\n                "
+                      )
+                    ]
+                  )
+                ],
+                1
+              )
+            ],
+            1
+          ),
+          _vm._v(" "),
+          _c(
+            "v-layout",
+            [
+              _c(
+                "v-flex",
                 { attrs: { sm5: "" } },
                 [
                   _c(
@@ -35350,6 +35500,30 @@ var render = function() {
                 1
               )
             ],
+            1
+          )
+        ],
+        1
+      ),
+      _vm._v(" "),
+      _c(
+        "v-fab-transition",
+        [
+          _c(
+            "v-btn",
+            {
+              attrs: {
+                color: "blue",
+                dark: "",
+                fab: "",
+                fixed: "",
+                bottom: "",
+                right: "",
+                disabled: _vm.seccion == null
+              },
+              on: { click: _vm.saveSelection }
+            },
+            [_c("v-icon", [_vm._v("save")])],
             1
           )
         ],
@@ -77221,8 +77395,8 @@ var router = new vue_router__WEBPACK_IMPORTED_MODULE_1__["default"]({
 /*! no static exports found */
 /***/ (function(module, exports, __webpack_require__) {
 
-__webpack_require__(/*! D:\wwwroot\laravel5\biblioteca\resources\js\app.js */"./resources/js/app.js");
-module.exports = __webpack_require__(/*! D:\wwwroot\laravel5\biblioteca\resources\sass\app.scss */"./resources/sass/app.scss");
+__webpack_require__(/*! C:\Users\clara\Documents\Jairo\biblioteca\resources\js\app.js */"./resources/js/app.js");
+module.exports = __webpack_require__(/*! C:\Users\clara\Documents\Jairo\biblioteca\resources\sass\app.scss */"./resources/sass/app.scss");
 
 
 /***/ })

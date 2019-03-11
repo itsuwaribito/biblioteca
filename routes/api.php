@@ -25,8 +25,11 @@ Route::prefix('catalogos')->group(function() {
     Route::get('ubicaciones', 'CatalogosController@getUbicaciones');
 });
 Route::resource('alumnos', 'AlumnosController')->only([
-    'create', 'store', 'update', 'destroy'
+    'store', 'update', 'destroy'
 ]);
 Route::resource('libros', 'LibrosController')->only([
-    'create', 'store', 'update', 'destroy'
+    'store', 'update', 'destroy'
+]);
+Route::resource('ubicaciones', 'UbicacionesController')->only([
+    'store', 'update', 'destroy'
 ]);

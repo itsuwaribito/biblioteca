@@ -27,6 +27,15 @@
                         <td>{{ props.item.nombre }}</td>
                         <td>{{ props.item.apellido_paterno }}</td>
                         <td>{{ props.item.apellido_materno }}</td>
+                        <td class="justify-center layout ">
+                            <v-icon
+                                small
+                                class="ma-auto"
+                                @click="editItem(props.item)"
+                            >
+                                edit
+                            </v-icon>
+                        </td>
                     </template>
                 </v-data-table>
                 <v-fab-transition>
@@ -118,6 +127,11 @@ export default {
                     value: 'apellido_materno',
                     sortable: false
                 },
+                {
+                    text: "Acciones",
+                    value: "nombre",
+                    sortable: false
+                },
             ],
             formData: {
                 numero_control: '',
@@ -140,14 +154,27 @@ export default {
         },
         altaAlumno() {
             this.dialog = true
+            this.formData = {
+                numero_control: '',
+                nombre: '',
+                apellido_paterno: '',
+                apellido_materno: ''
+            }
+        },
+        editItem(alumno) {
+            this.dialog = true
+            this.formData = alumno
         },
         async saveAlumno() {
             this.isLoading = true
-            const response = await axios.post('/api/alumnos', this.formData)
-
+            var response = null
+            if(this.formData.hasOwnProperty('id')) {
+                response = await axios.put(`/api/alumnos/${this.formData.id}`, this.formData)
+            } else {
+                response = await axios.post('/api/alumnos', this.formData)
+            }
             this.dialog = false
             this.getAlumnos()
-            console.log(response.data)
         }
         
     }

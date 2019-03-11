@@ -20,6 +20,18 @@
             </v-layout>
 
             <v-layout>
+                <v-flex sm12>
+                    <v-alert
+                        :value="true"
+                        type="warning"
+                        class="mb-3"
+                    >
+                        This is a warning alert.
+                    </v-alert>
+                </v-flex>
+            </v-layout>
+
+            <v-layout>
                 <v-flex sm5>
                     <v-card>
                         <v-list two-line subheader>
@@ -67,6 +79,20 @@
                 </v-flex>
             </v-layout>
         </v-flex>
+        <v-fab-transition>
+                <v-btn
+                    color="blue"
+                    dark
+                    fab
+                    fixed
+                    bottom
+                    right
+                    @click="saveSelection"
+                    :disabled="seccion == null"
+                >
+                    <v-icon>save</v-icon>
+                </v-btn>
+            </v-fab-transition>
     </v-layout>
 </template>
 
@@ -134,6 +160,14 @@ export default {
         seleccionar(estante) {
             estante.isSelected = true
         },
+        async saveSelection() {
+            const response = await axios.put(`/api/ubicaciones/${this.seccion}`,{
+                disponibles: this.disponibles,
+                seleccionados: this.seleccionados
+            } )
+
+            console.log(response)
+        }
     },
     watch: {
         seccion() {
