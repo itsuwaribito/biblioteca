@@ -8,26 +8,28 @@
             </v-layout>
 
             <v-layout>
-                <v-flex sm4>
-                    <v-select
-                        :items="secciones"
-                        item-text="nombre"
-                        item-value="id"
-                        label="Seleccionar seccion"
-                        v-model="seccion"
-                    ></v-select>
+                <v-flex sm12>
+                    <v-alert
+                        v-model="hasError"
+                        icon="warning"
+                        color="error"
+                        class="mb-3"
+                        dismissible
+                    >
+                        Error al asignar estantes a la seccion: {{ selectedSeccion }}
+                    </v-alert>
                 </v-flex>
             </v-layout>
 
             <v-layout>
-                <v-flex sm12>
-                    <v-alert
-                        :value="true"
-                        type="warning"
-                        class="mb-3"
-                    >
-                        This is a warning alert.
-                    </v-alert>
+                <v-flex sm4>
+                    <v-select
+                        :items="secciones"
+                        item-text="nombre"
+                        label="Seleccionar seccion"
+                        v-model="seccion"
+                        return-object
+                    ></v-select>
                 </v-flex>
             </v-layout>
 
@@ -104,7 +106,8 @@ export default {
         return {
             estantes: [],
             secciones: [],
-            seccion: null
+            seccion: null,
+            hasError: false
         }
     },
     created() {
@@ -121,6 +124,9 @@ export default {
             return this.estantes.filter((estante) => {
                 return estante.isSelected
             })
+        },
+        selectedSeccion() {
+            return (this.seccion == null) ? '' : this.seccion.nombre
         }
     },
     methods: {
@@ -136,7 +142,7 @@ export default {
         async getEstantesSeleccionados() {
             const response = await axios.get('/api/catalogos/estantes', {
                 params: {
-                    seccion: this.seccion
+                    seccion: this.seccion.id
                 }
             })
 
@@ -161,12 +167,16 @@ export default {
             estante.isSelected = true
         },
         async saveSelection() {
-            const response = await axios.put(`/api/ubicaciones/${this.seccion}`,{
-                disponibles: this.disponibles,
-                seleccionados: this.seleccionados
-            } )
-
-            console.log(response)
+            try {
+                const response = await axios.put(`/api/ubicaciones/${this.seccion.id}`, {
+                    disponibles: this.disponibles,
+                    seleccionados: this.seleccionados
+                })
+                console.log(response.data)
+            } catch(e) {
+                this.hasError = true
+                console.error('yolo',e.message)
+            }
         }
     },
     watch: {
