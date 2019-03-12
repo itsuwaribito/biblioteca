@@ -11,6 +11,7 @@ class LibrosController extends Controller
     {
         $formData = $request->all();
         $formData['estados_id'] = 1;
+        $formData['existencia'] = $request->cantidad;
         $dato = Libro::create($formData);
         return $dato;
     }

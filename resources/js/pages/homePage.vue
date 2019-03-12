@@ -53,7 +53,7 @@
                                 <v-btn bottom flat color="orange" class="ml-0">Devoución</v-btn>
                             </v-flex>
                             <v-layout justify-end>
-                                <v-chip color="orange" text-color="white">{{ libro.cantidad }}</v-chip>
+                                <v-chip color="orange" text-color="white">{{ libro.existencia }}</v-chip>
                             </v-layout>
                         </v-card-actions>
                     </v-card>
