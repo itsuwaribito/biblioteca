@@ -13,7 +13,7 @@ class CatalogosController extends Controller
 {
     public function getLibros(Request $request)
     {
-        $data = Libro::with('prestamos.alumno');
+        $data = Libro::with('prestamos');
 
         if($request->all == "false")
         {
@@ -27,7 +27,7 @@ class CatalogosController extends Controller
 
     public function getAlumnos()
     {
-        $data = Alumno::all();
+        $data = Alumno::with('librosPrestados','librosDebueltos')->get();
         return $data;
     }
 

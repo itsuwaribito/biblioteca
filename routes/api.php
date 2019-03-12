@@ -24,9 +24,17 @@ Route::prefix('catalogos')->group(function() {
     Route::get('estantes', 'CatalogosController@getEstantes');
     Route::get('ubicaciones', 'CatalogosController@getUbicaciones');
 });
-Route::resource('alumnos', 'AlumnosController')->only([
-    'store', 'update', 'destroy'
-]);
+
+
+Route::prefix('alumnos')->group(function() {
+    Route::resource('/', 'AlumnosController')->only([
+        'store', 'update', 'destroy'
+    ]);
+    
+    Route::get('/{alumno}/borrowedBooks','AlumnosController@getBorrowedBooks');
+    Route::get('/{alumno}/returnedBooks','AlumnosController@getReturnedBooks');
+});
+
 Route::resource('libros', 'LibrosController')->only([
     'store', 'update', 'destroy'
 ]);

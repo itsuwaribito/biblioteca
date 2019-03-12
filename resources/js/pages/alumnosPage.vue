@@ -35,6 +35,36 @@
                             >
                                 edit
                             </v-icon>
+
+                            <v-tooltip left>
+                                <template v-slot:activator="{ on }">
+                                    <img
+                                        v-on="on"
+                                        src="/img/return-book.png"
+                                        alt="Libros prestados"
+                                        class="ma-auto pointer"
+                                        height="20"
+                                        contain
+                                        @click="showBorrowedBooks(props.item)"
+                                    >
+                                </template>
+                                <span>Libros prestados</span>
+                            </v-tooltip>
+
+                            <v-tooltip right>
+                                <template v-slot:activator="{ on }">
+                                    <img
+                                        v-on="on"
+                                        alt="Libros devueltos"
+                                        src="/img/borrow-book.png"
+                                        class="ma-auto pointer"
+                                        height="20"
+                                        contain
+                                        @click="showReturnedBooks(props.item)"
+                                    >
+                                </template>
+                                <span>Libros devueltos</span>
+                            </v-tooltip>
                         </td>
                     </template>
                 </v-data-table>
@@ -54,7 +84,7 @@
             </v-card>
         </v-flex>
 
-        <v-dialog v-model="dialog" persistent max-width="600px">
+        <v-dialog v-model="modal.formulario" persistent max-width="600px">
             <v-card>
                 <v-card-title>
                     <span class="headline">Alta de alumno</span>
@@ -90,11 +120,60 @@
                  </v-container>
                 <v-card-actions>
                     <v-spacer></v-spacer>
-                    <v-btn color="blue darken-1" flat @click="dialog = !dialog">Cancelar</v-btn>
+                    <v-btn color="blue darken-1" flat @click="modal.formulario = false">Cancelar</v-btn>
                     <v-btn color="blue darken-1" flat :loading="isLoading" @click="saveAlumno">Guardar</v-btn>
                 </v-card-actions>
             </v-card>
         </v-dialog>
+
+        <v-dialog v-model="modal.listado" max-width="800px">
+            <v-card>
+                <v-card-title>
+                    <span class="headline">{{ listado_title }} a <b>{{listado.selected.full_name}}</b></span>
+                </v-card-title>
+                 <v-container grid-list-lg>
+                        <v-layout wrap>
+                            <v-flex xs12 sm12>
+                                <v-list two-line subheader>
+                                    <!-- <v-divider></v-divider> -->
+                                    <v-alert
+                                        :value="true"
+                                        color="info"
+                                        icon="info"
+                                        outline
+                                        v-if="listado.data.length == 0"
+                                    >
+                                        No se encontraron libros
+                                    </v-alert>
+                                    <template v-else v-for="(libro,index) in listado.data">
+                                        <v-list-tile
+                                            :key="libro.titulo"
+                                        >
+                                            <v-list-tile-content>
+                                                <v-list-tile-title>{{ libro.titulo }}</v-list-tile-title>
+                                                <v-list-tile-sub-title>{{ libro.edicion }}</v-list-tile-sub-title>
+                                            </v-list-tile-content>
+                                                <v-list-tile-action>
+                                                    {{ libro.pivot.fecha_prestamo }}
+                                                </v-list-tile-action>
+                                        </v-list-tile>
+                                        <v-divider
+                                            v-if="index + 1 < listado.data.length"
+                                            :key="index"
+                                            class="ma-0"
+                                        ></v-divider>
+                                    </template>
+                                </v-list>
+                            </v-flex>
+                        </v-layout>
+                 </v-container>
+                <v-card-actions>
+                    <v-spacer></v-spacer>
+                    <v-btn color="blue darken-1" flat @click="modal.listado = false">Cerrar</v-btn>
+                </v-card-actions>
+            </v-card>
+        </v-dialog>
+
     </v-layout>
 </template>
 
@@ -141,8 +220,23 @@ export default {
             },
             alumnos:[],
             search: '',
-            dialog: false,
-            isLoading: false
+            isLoading: false,
+            modal: {
+                formulario: false,
+                listado: false
+            },
+            listado: {
+                returned: true,
+                data: [],
+                selected: {
+                    full_name: ''
+                }
+            }
+        }
+    },
+    computed: {
+        listado_title() {
+            return (this.listado.returned) ? 'Libros devueltos':'Libros prestados'
         }
     },
     methods:{
@@ -153,7 +247,7 @@ export default {
             this.isLoading = false
         },
         altaAlumno() {
-            this.dialog = true
+            this.modal.formulario = true
             this.formData = {
                 numero_control: '',
                 nombre: '',
@@ -162,7 +256,7 @@ export default {
             }
         },
         editItem(alumno) {
-            this.dialog = true
+            this.modal.formulario = true
             this.formData = alumno
         },
         async saveAlumno() {
@@ -173,14 +267,29 @@ export default {
             } else {
                 response = await axios.post('/api/alumnos', this.formData)
             }
-            this.dialog = false
+            this.modal.formulario = false
             this.getAlumnos()
+        },
+        async showBorrowedBooks(alumno) {
+            // const {data} = await axios.get(`/api/alumnos/${alumno.id}/borrowedBooks`)
+            this.listado.data = alumno.libros_prestados
+            this.listado.selected = alumno
+            this.listado.returned = false
+            this.modal.listado = true
+        },
+        async showReturnedBooks(alumno) {
+            // const {data} = await axios.get(`/api/alumnos/${alumno.id}/returnedBooks`)
+            this.listado.data = alumno.libros_debueltos
+            this.listado.selected = alumno
+            this.listado.returned = true
+            this.modal.listado = true
         }
-        
     }
 }
 </script>
 
-<style lang="sass" scoped>
-
+<style scoped>
+    .pointer {
+        cursor: pointer
+    }
 </style>
