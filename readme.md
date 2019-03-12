@@ -1,71 +1,59 @@
-<p align="center"><img src="https://laravel.com/assets/img/components/logo-laravel.svg"></p>
 
-<p align="center">
-<a href="https://travis-ci.org/laravel/framework"><img src="https://travis-ci.org/laravel/framework.svg" alt="Build Status"></a>
-<a href="https://packagist.org/packages/laravel/framework"><img src="https://poser.pugx.org/laravel/framework/d/total.svg" alt="Total Downloads"></a>
-<a href="https://packagist.org/packages/laravel/framework"><img src="https://poser.pugx.org/laravel/framework/v/stable.svg" alt="Latest Stable Version"></a>
-<a href="https://packagist.org/packages/laravel/framework"><img src="https://poser.pugx.org/laravel/framework/license.svg" alt="License"></a>
+<p align="justify">
+Este proyecto fue creado para el manejo de préstamos y devoluciones de una biblioteca. Con el fin de optimizar la administración de préstamos de libros y mantener una bitácora actualizada y disponible en todo momento. Las herramientas de desarrollo utilizadas son VueJS (v2.5), Laravel (v5.8), Vuetify (v1.5.4) y VueRouter (v3.0). Para la implementación y/o mejora de este proyecto se recomienda conocer el uso y la implementación de las herramientas de desarrollo antes mencionadas.
 </p>
 
-## About Laravel
+## Acerca de Laravel
+Laravel es un framework de aplicaciones web que se enfoca en la sintaxis elegante. Laravel es accesible y provee de las herramientas necesarias para el desarrollo de aplicativos robustos.
 
-Laravel is a web application framework with expressive, elegant syntax. We believe development must be an enjoyable and creative experience to be truly fulfilling. Laravel takes the pain out of development by easing common tasks used in many web projects, such as:
 
-- [Simple, fast routing engine](https://laravel.com/docs/routing).
-- [Powerful dependency injection container](https://laravel.com/docs/container).
-- Multiple back-ends for [session](https://laravel.com/docs/session) and [cache](https://laravel.com/docs/cache) storage.
-- Expressive, intuitive [database ORM](https://laravel.com/docs/eloquent).
-- Database agnostic [schema migrations](https://laravel.com/docs/migrations).
-- [Robust background job processing](https://laravel.com/docs/queues).
-- [Real-time event broadcasting](https://laravel.com/docs/broadcasting).
+## Acerca de VueJS
+VueJs es un framework del lado del cliente que, al igual que Laravel, provee de las herramientas necesarias para la creación de páginas dinámicas. Aunque en este proyecto solamente se utilizó VueJS para el desarrollo del front-end, el framework funciona perfectamente en conjunto con otras herramientas. La documentación es muy extensa y vasta, ya que no solo ofrece ejemplos de cómo utilizar VueJS sino también de cómo implementarlo en proyectos ya existentes.
 
-Laravel is accessible, powerful, and provides tools required for large, robust applications.
+## Algunos enlaces de interes
+- [Documentación de Laravel en ingles](https://laravel.com/docs/)
+- [Documentación de Laravel en español (desactualizada)](https://laraveles.com/)
+- [Laracasts (foro)](https://laracasts.com)
+- [VueJS](https://vuejs.org/)
+- [Vuetify](https://vuetifyjs.com/es-MX/)
+- [Vue Router](https://router.vuejs.org/)
+- [Styde.net](https://styde.net/)
 
-## Learning Laravel
+## Desarrollo
+``` bash
+# clonar proyecto de Github
+git clone https://github.com/itsuwaribito/biblioteca.git
 
-Laravel has the most extensive and thorough [documentation](https://laravel.com/docs) and video tutorial library of all modern web application frameworks, making it a breeze to get started with the framework.
+# ubicarse en la carpeta generada 
+cd biblioteca
 
-If you don't feel like reading, [Laracasts](https://laracasts.com) can help. Laracasts contains over 1100 video tutorials on a range of topics including Laravel, modern PHP, unit testing, and JavaScript. Boost you and your team's skills by digging into our comprehensive video library.
+# instalar dependencias de Laravel
+composer install
 
-## Laravel Sponsors
+# configurar la base de datos en el archivo de variables de entorno de Laravel
+    DB_CONNECTION=mysql
+    DB_HOST=localhost
+    DB_PORT=3306
+    DB_DATABASE=nombre_db
+    DB_USERNAME=user_db
+    DB_PASSWORD=password_db
 
-We would like to extend our thanks to the following sponsors for funding Laravel development. If you are interested in becoming a sponsor, please visit the Laravel [Patreon page](https://patreon.com/taylorotwell).
+# instalar dependencias de JavaScript
+npm install
 
-- **[Vehikl](https://vehikl.com/)**
-- **[Tighten Co.](https://tighten.co)**
-- **[Kirschbaum Development Group](https://kirschbaumdevelopment.com)**
-- **[64 Robots](https://64robots.com)**
-- **[Cubet Techno Labs](https://cubettech.com)**
-- **[Cyber-Duck](https://cyber-duck.co.uk)**
-- **[British Software Development](https://www.britishsoftware.co)**
-- **[Webdock, Fast VPS Hosting](https://www.webdock.io/en)**
-- **[DevSquad](https://devsquad.com)**
-- [UserInsights](https://userinsights.com)
-- [Fragrantica](https://www.fragrantica.com)
-- [SOFTonSOFA](https://softonsofa.com/)
-- [User10](https://user10.com)
-- [Soumettre.fr](https://soumettre.fr/)
-- [CodeBrisk](https://codebrisk.com)
-- [1Forge](https://1forge.com)
-- [TECPRESSO](https://tecpresso.co.jp/)
-- [Runtime Converter](http://runtimeconverter.com/)
-- [WebL'Agence](https://weblagence.com/)
-- [Invoice Ninja](https://www.invoiceninja.com)
-- [iMi digital](https://www.imi-digital.de/)
-- [Earthlink](https://www.earthlink.ro/)
-- [Steadfast Collective](https://steadfastcollective.com/)
-- [We Are The Robots Inc.](https://watr.mx/)
-- [Understand.io](https://www.understand.io/)
-- [Abdel Elrafa](https://abdelelrafa.com)
+# compilar archivos JavaScript
+npm run dev
 
-## Contributing
+# ejecutar migraciones
+php artisan migrate
 
-Thank you for considering contributing to the Laravel framework! The contribution guide can be found in the [Laravel documentation](https://laravel.com/docs/contributions).
+# ejecutar seeders
+php artisan db:seed
 
-## Security Vulnerabilities
+# montar servidor con artisan
+php artisan serve
+```
+## Licencia
+Esto es un software open-source bajo la licencia [MIT](https://opensource.org/licenses/MIT).
 
-If you discover a security vulnerability within Laravel, please send an e-mail to Taylor Otwell via [taylor@laravel.com](mailto:taylor@laravel.com). All security vulnerabilities will be promptly addressed.
-
-## License
-
-The Laravel framework is open-source software licensed under the [MIT license](https://opensource.org/licenses/MIT).
+[Itsuwaibito](https://github.com/itsuwaribito)
