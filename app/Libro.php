@@ -55,4 +55,32 @@ class Libro extends Model
     {
         return $this->hasMany('App\Prestamo', 'libros_id');
     }
+
+    /**
+     * Obtiene los alumnos que aun no regresan el libro
+     */
+    public function alumnosPendientes()
+    {
+        return $this->belongsToMany('App\Alumno', 'prestamos', 'libros_id', 'alumnos_id')
+        ->wherePivot('fecha_devolucion',NULL)
+        ->withPivot([
+            'fecha_prestamo',
+            'fecha_devolucion',
+            'observaciones'
+        ]);
+    }
+    
+    /**
+     * Obtiene los alumnos que devolbieron el libro
+     */
+    public function alumnosNoPendientes()
+    {
+        return $this->belongsToMany('App\Alumno', 'prestamos', 'libros_id', 'alumnos_id')
+        ->where('fecha_devolucion','<',\Carbon\Carbon::now())
+        ->withPivot([
+            'fecha_prestamo',
+            'fecha_devolucion',
+            'observaciones'
+        ]);
+    }
 }
