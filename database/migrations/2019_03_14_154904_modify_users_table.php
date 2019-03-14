@@ -15,8 +15,8 @@ class ModifyUsersTable extends Migration
     {
         Schema::table('users', function (Blueprint $table) {
             $table->string('username',60)->unique()->after('id');
-            $table->string('apellido_materno',60)->unique()->after('name');
-            $table->string('apellido_paterno',60)->unique()->after('name');
+            $table->string('apellido_materno',60)->after('name');
+            $table->string('apellido_paterno',60)->after('name');
         });
     }
 
