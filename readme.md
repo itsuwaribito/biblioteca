@@ -10,7 +10,7 @@ Laravel es un framework de aplicaciones web que se enfoca en la sintaxis elegant
 ## Acerca de VueJS
 VueJs es un framework del lado del cliente que, al igual que Laravel, provee de las herramientas necesarias para la creación de páginas dinámicas. Aunque en este proyecto solamente se utilizó VueJS para el desarrollo del front-end, el framework funciona perfectamente en conjunto con otras herramientas. La documentación es muy extensa y vasta, ya que no solo ofrece ejemplos de cómo utilizar VueJS sino también de cómo implementarlo en proyectos ya existentes.
 
-## Algunos enlaces de interes
+## Enlaces de interes
 - [Documentación de Laravel en ingles](https://laravel.com/docs/)
 - [Documentación de Laravel en español (desactualizada)](https://laraveles.com/)
 - [Laracasts (foro)](https://laracasts.com)
@@ -56,4 +56,4 @@ php artisan serve
 ## Licencia
 Esto es un software open-source bajo la licencia [MIT](https://opensource.org/licenses/MIT).
 
-[Itsuwaibito](https://github.com/itsuwaribito)
+[Jairo Nava Magaña](https://github.com/itsuwaribito)
