@@ -11,6 +11,14 @@
 |
 */
 
-Route::get('/', function () {
-    return view('app');
-});
+
+Auth::routes();
+
+// Route::group(['middleware' => 'auth'], function() {
+    Route::view('{vue}','app')
+        ->where('vue', '^(?!.*api).*$[\/\w\.-]*')
+        ->where('vue','^(?:(?!login).)*$');
+// });
+
+
+// Route::get('/home', 'HomeController@index')->name('home');

@@ -87,7 +87,7 @@
                                             ></v-checkbox>
                                         </v-list-tile-action>
                                     </v-list-tile>
-                                    <v-divider :key="index" v-if="index + 1 < alumnos.length" class="ma-0"></v-divider>
+                                    <v-divider v-if="index + 1 < alumnos.length" class="ma-0"></v-divider>
                                 </template>
                             </v-list>
                         </v-flex>
@@ -139,7 +139,7 @@
                                         <v-list-tile-sub-title>{{alumno.full_name}}</v-list-tile-sub-title>
                                     </v-list-tile-content>
                                 </v-list-tile>
-                                <v-divider :key="index" v-if="index + 1 < filtered_alumnos.length"></v-divider>
+                                <v-divider v-if="index + 1 < filtered_alumnos.length"></v-divider>
                             </template>
                         </v-list>
                 </v-responsive>

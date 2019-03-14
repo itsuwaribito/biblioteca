@@ -26,23 +26,27 @@ Route::prefix('catalogos')->group(function() {
 });
 
 
-Route::prefix('alumnos')->group(function() {
-    Route::resource('/', 'AlumnosController')->only([
-        'store', 'update', 'destroy'
+Route::middleware('auth')->group(function() {
+    Route::prefix('alumnos')->group(function() {
+        Route::resource('/', 'AlumnosController')->only([
+            'store', 'update', 'destroy'
         ]);
         
         Route::get('/{alumno}/borrowedBooks','AlumnosController@getBorrowedBooks');
         Route::get('/{alumno}/returnedBooks','AlumnosController@getReturnedBooks');
     });
-    
-Route::prefix('libros')->group(function() {
-    Route::resource('/', 'LibrosController')->only([
+        
+    Route::prefix('libros')->group(function() {
+        Route::resource('/', 'LibrosController')->only([
+            'store', 'update', 'destroy'
+        ]);
+
+        Route::post('/{libro}/devolucion','LibrosController@devolucion');
+        Route::post('/{libro}/prestamo','LibrosController@prestamo');
+    });
+
+    Route::resource('ubicaciones', 'UbicacionesController')->only([
         'store', 'update', 'destroy'
     ]);
 
-    Route::post('/{libro}/devolucion','LibrosController@devolucion');
-    Route::post('/{libro}/prestamo','LibrosController@prestamo');
 });
-Route::resource('ubicaciones', 'UbicacionesController')->only([
-    'store', 'update', 'destroy'
-]);

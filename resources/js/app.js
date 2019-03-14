@@ -14,6 +14,7 @@ import 'vuetify/dist/vuetify.min.css' // Ensure you are using css-loader
 import 'material-design-icons-iconfont/dist/material-design-icons.css' // Ensure you are using css-loader
 
 import router from './router.js'
+import App from './components/app.vue'
 
 Vue.use(Vuetify)
 
@@ -23,4 +24,7 @@ const app = new Vue({
     data: () => ({
         drawer: false
       }),
+    components: {
+      App
+    }
 });
