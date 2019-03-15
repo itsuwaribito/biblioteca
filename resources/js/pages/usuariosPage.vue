@@ -1,7 +1,7 @@
 <template>
     <v-layout>
         <v-flex xs12 sm10 offset-sm1>
-            <h2 class="mb-4">Adiministrador de usuarios</h2>
+            <h2 class="mb-4">Administrador de usuarios</h2>
             <v-card>
                  <v-card-title>
                     
@@ -114,6 +114,29 @@
                     </v-card>
                 </v-dialog>
 
+                <v-dialog v-model="eliminar.modal" persistent max-width="500px">
+                    <v-card>
+                        <v-container>
+                            <h4>El usuario sera eliminado de forma permanente</h4>
+                            
+                            <p>¿Desea elimnar el usuario <b>{{eliminar.usuario}}</b>?</p>
+                            <v-alert
+                                :value="errores.length != 0"
+                                color="error"
+                                icon="warning"
+                                outline
+                            >
+                                {{errores}}
+                            </v-alert>
+                        </v-container>
+                        <v-card-actions>
+                            <v-spacer></v-spacer>
+                            <v-btn color="blue darken-1" flat @click="eliminar.modal = false">Cancelar</v-btn>
+                            <v-btn color="red darken-1" flat :loading="loading" @click="deleteUsuario">Eliminar</v-btn>
+                        </v-card-actions>
+                    </v-card>
+                </v-dialog>
+
                 <v-fab-transition>
                     <v-btn
                         color="blue"
@@ -184,7 +207,11 @@ export default {
             },
             loading: false,
             show1: false,
-            errores: []
+            errores: [],
+            eliminar: {
+                modal: false,
+                usuario: ''
+            }
         }
     },
     methods: {
@@ -198,6 +225,7 @@ export default {
             this.loading = false
         },
         editItem(user) {
+            this.errores = []
             this.modal.showing = true
             this.modal.titulo = 'Modificar usuario'
             this.formData = user
@@ -223,6 +251,7 @@ export default {
             this.getUsuarios()
         },
         altaUsuario() {
+            this.errores = []
             this.modal.showing = true
             this.modal.titulo = 'Alta de usuario'
             this.formData = {
@@ -233,6 +262,27 @@ export default {
                 email: '',
                 password: ''
             }
+        },
+        deleteItem(user) {
+            this.eliminar.modal = true
+            this.eliminar.usuario = user.full_name
+            this.eliminar.id = user.id
+            this.errores = []
+        },
+        async deleteUsuario() {
+            this.loading = true
+            try {
+                await axios.delete(`/api/usuarios/${this.eliminar.id}`)
+                this.eliminar.modal = false
+                this.eliminar.usuario = ''
+                this.eliminar.id = ''
+                this.getUsuarios()
+            } catch(e) {
+                if(e.response.status == 403)
+                    this.errores = e.response.data.message
+            }
+            this.loading = false
+            
         }
     }
 }

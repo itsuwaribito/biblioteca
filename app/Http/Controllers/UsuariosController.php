@@ -25,6 +25,11 @@ class UsuariosController extends Controller
 
     public function destroy(Request $request, $id)
     {
-        // 
+        if($id == auth()->user()->id)
+        {
+            abort(403,'No se puede eliminar el usuario de esta sesion');
+        }
+        $usuario = User::destroy($id);
+        return $usuario;
     }
 }
