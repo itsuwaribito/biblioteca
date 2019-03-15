@@ -17,7 +17,7 @@ class User extends Authenticatable
      * @var array
      */
     protected $fillable = [
-        'name', 'email', 'password',
+        'apellido_materno', 'apellido_paterno', 'username', 'name', 'email', 'password',
     ];
 
     /**
@@ -38,6 +38,13 @@ class User extends Authenticatable
         'email_verified_at' => 'datetime',
     ];
 
+    /**
+     * The accessors to append to the model's array form.
+     *
+     * @var array
+     */
+    protected $appends = ['full_name', 'apellidos'];
+
     public function setPasswordAttribute($pass)
     {
         if (Hash::needsRehash($pass))
@@ -46,5 +53,25 @@ class User extends Authenticatable
         }
         
         $this->attributes['password'] = $pass;
+    }
+
+    /**
+     * Obtiene el nombre completo como un solo campo
+     *
+     * @return string
+     */
+    public function getFullNameAttribute()
+    {
+        return $this->attributes['name'].' '.$this->attributes['apellido_paterno'].' '.$this->attributes['apellido_materno'];
+    }
+
+    /**
+     * Obtiene los apellidos como un solo campo
+     *
+     * @return string
+     */
+    public function getApellidosAttribute()
+    {
+        return $this->attributes['apellido_paterno'].' '.$this->attributes['apellido_materno'];
     }
 }

@@ -23,6 +23,7 @@ Route::prefix('catalogos')->group(function() {
     Route::get('secciones', 'CatalogosController@getSecciones');
     Route::get('estantes', 'CatalogosController@getEstantes');
     Route::get('ubicaciones', 'CatalogosController@getUbicaciones');
+    Route::get('usuarios', 'CatalogosController@getUsuarios');
 });
 
 
@@ -49,4 +50,7 @@ Route::middleware('auth')->group(function() {
         'store', 'update', 'destroy'
     ]);
 
+    Route::resource('usuarios', 'UsuariosController')->only([
+        'store', 'update', 'destroy'
+    ]);
 });

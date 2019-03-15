@@ -11,7 +11,15 @@
     </head>
     <body>
         <div id="app">
-            <app></app>
+            @auth
+                // The user is authenticated...
+                <app logged_user="{{ auth()->user()->full_name }}"></app>
+            @endauth
+            
+            @guest
+                // The user is not authenticated...
+                <app logged_user=""></app>
+            @endguest
         </div>
 
         <script src="{{ asset('js/app.js') }}"></script>

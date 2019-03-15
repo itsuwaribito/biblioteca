@@ -54,6 +54,15 @@
                             <v-list-tile-title>Estantes</v-list-tile-title>
                         </v-list-tile-content>
                     </v-list-tile>
+
+                    <v-divider></v-divider>
+
+                    <v-list-tile @click="$router.push({ name: 'Usuarios'})">
+                        <v-list-tile-action>
+                            <v-icon>group</v-icon>
+                            </v-list-tile-action>
+                        <v-list-tile-title>Usuarios</v-list-tile-title>
+                    </v-list-tile>
                 </v-list>
             </v-navigation-drawer>
             <v-toolbar app fixed>
@@ -68,7 +77,8 @@
                         flat
                         :ripple="false"
                     >
-                        Nombre del bato
+                        
+                        {{ user }}
                     </v-btn>
                 </v-toolbar-items>
                 <v-toolbar-items class="hidden-sm-and-down">
@@ -88,13 +98,18 @@
 <script>
 export default {
     data: () => ({
-        drawer: false
+        drawer: false,
+        user: ''
       }),
+    created() {
+        this.user = localStorage.user
+    },
     methods: {
         logout() {
             axios.post('/logout')
             .then((response) => {
                 if(response.status == 200) {
+                    localStorage.removeItem('user');
                     window.location.assign('/')
                 }
             })

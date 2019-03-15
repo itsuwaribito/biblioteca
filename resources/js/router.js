@@ -10,6 +10,7 @@ import AlumnosPage from './pages/alumnosPage'
 import EstantesPage from './pages/estantesPage'
 import LoginPage from './pages/loginPage'
 import GuestSearchPage from './pages/guestSearchPage'
+import UsuariosPage from './pages/usuariosPage'
 
 Vue.use(Router)
 
@@ -42,6 +43,11 @@ const router = new Router ({
                     path: '/estantes',
                     name: 'Estantes',
                     component: EstantesPage
+                },
+                {
+                    path: '/usuarios',
+                    name: 'Usuarios',
+                    component: UsuariosPage
                 },
                 {
                     path: '*',
