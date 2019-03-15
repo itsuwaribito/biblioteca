@@ -23,6 +23,9 @@ const router = new Router ({
         {
             path: '/admin',
             component: defaultLayout,
+            meta: {
+                requiresAuth: true
+            },
             children: [
                 {
                     path: '/',
@@ -80,6 +83,29 @@ const router = new Router ({
             ]
         },
     ]
+})
+
+router.beforeEach((to, from, next) => {
+    if (to.matched.some(record => record.meta.requiresAuth)) {
+        // this route requires auth, check if logged in
+        // if not, redirect to login page.
+        console.log('user', localStorage.user)
+        console.log('from', from)
+        console.log('to', to)
+        console.log('next', next)
+        if(!(from.path == '/' && to.name == 'Home')) {
+
+            if (localStorage.user == "null") {
+                next({
+                    name: 'Login',
+                    query: {
+                        redirect: to.fullPath
+                    }
+                })
+            }    
+        }
+    }
+    next()
 })
 
 export default router

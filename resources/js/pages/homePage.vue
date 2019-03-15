@@ -172,6 +172,9 @@
     import helper from './../helper.js'
     export default {
         created() {
+            if (localStorage.user == "null") {
+                this.$router.push('login')
+            }
             this.getAllAlumnos()
         },
         data () {
