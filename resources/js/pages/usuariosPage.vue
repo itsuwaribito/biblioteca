@@ -35,6 +35,13 @@
                             >
                                 edit
                             </v-icon>
+                            <v-icon
+                                small
+                                class="ma-auto"
+                                @click="deleteItem(props.item)"
+                            >
+                                delete
+                            </v-icon>
                         </td>
                     </template>
                 </v-data-table>
@@ -193,12 +200,20 @@ export default {
         editItem(user) {
             this.modal.showing = true
             this.modal.titulo = 'Modificar usuario'
+            this.formData = user
         },
         async saveUsuario() {
             this.loading = true
             this.errores = []
             try {
-                const response = await axios.post('/api/usuarios', this.formData)
+                if(this.formData.hasOwnProperty('id')) {
+                    if(this.formData.password.length == 0) {
+                        delete this.formData.password
+                    }
+                    const response = await axios.put(`/api/usuarios/${this.formData.id}`, this.formData)
+                } else {
+                    const response = await axios.post('/api/usuarios', this.formData)
+                }
                 this.modal.showing = false
             } catch(e) {
                 if(e.response.status == 422)
@@ -210,6 +225,14 @@ export default {
         altaUsuario() {
             this.modal.showing = true
             this.modal.titulo = 'Alta de usuario'
+            this.formData = {
+                username: '',
+                name: '',
+                apellido_paterno: '',
+                apellido_materno: '',
+                email: '',
+                password: ''
+            }
         }
     }
 }
