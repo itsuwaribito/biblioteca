@@ -4,10 +4,9 @@
             <v-navigation-drawer
                 app
                 v-model="drawer"
-                dark
-                
             >
-                <v-toolbar flat>
+                
+                <v-toolbar flat dark class="blue darken-2">
                     <v-list>
                         <v-list-tile>
                             <v-list-tile-title class="title">
@@ -65,7 +64,7 @@
                     </v-list-tile>
                 </v-list>
             </v-navigation-drawer>
-            <v-toolbar app fixed>
+            <v-toolbar app fixed dark color="primary">
                 <v-toolbar-side-icon @click.stop="drawer = !drawer"></v-toolbar-side-icon>
                 <v-toolbar-title>Biblioteca de libros</v-toolbar-title>
 
