@@ -1,171 +1,188 @@
 <template>
-    <v-layout>
-        <v-flex xs12 sm10 offset-sm1>
-                    <h2>Buscar libro</h2>
-            <v-layout class="mb-3">
-                <v-flex xs12 sm12 md6>
-                    <v-text-field
-                        label="Busqueda..."
-                        prepend-icon="search"
-                        :loading="searching"
-                        v-model="search"
-                        v-on:keyup="searchBook"
-
-                    ></v-text-field>
-                </v-flex>
-            </v-layout>
-            <v-layout row wrap>
-                <v-flex sm12 v-if="bookList.length == 0" class="">
-                    <h4 color="grey lighten-1">Sin libros para mostrar</h4>
-                </v-flex>
-                <v-flex pa-4 d-flex xs12 sm6 md4 lg3 v-for="libro in bookList" :key="libro.id">
-                    <v-card width="350" light color="#E7E7E7">
-
-                        <v-img
-                            height="250"
-                            
-                            :src="getBookURL(libro.imagen)"
+    <div>
+        <v-layout>
+            <v-flex sm10 offset-sm1>
+                <v-layout class="mb-3">
+                    <v-flex sm12>
+                        <v-alert
+                        :value="true"
+                        type="warning"
                         >
-                            <v-container fill-height fluid>
-                                <v-layout fill-height>
-                                    <v-flex xs12 align-end flexbox>
-                                        <span class="headline">{{ libro.titulo }}</span>
-                                    </v-flex>
-                                </v-layout>
-                            </v-container>
-                        </v-img>
-
-                        <v-card-title primary-title>
-                            <div>
-                                <h4 class="mb-0 grey--text">{{ libro.autor }}</h4>
-                                <div> {{ libro.editorial }} </div>
-                            </div>
-                        </v-card-title>
-
-                        <v-card-actions>
-                            <v-flex>
-                                <v-btn
-                                    bottom
-                                    flat
-                                    color="orange"
-                                    :disabled="libro.existencia == 0"
-                                    @click="showPrestamo(libro)"
-                                >Préstamo</v-btn>
-                                <v-btn
-                                    bottom
-                                    flat
-                                    color="orange"
-                                    class="ml-0"
-                                    @click="showDevolucion(libro)"
-                                >Devoución</v-btn>
-                            </v-flex>
-                            <v-layout justify-end>
-                                <v-chip color="orange" text-color="white">{{ libro.existencia }}/{{libro.cantidad}}</v-chip>
-                            </v-layout>
-                        </v-card-actions>
-                    </v-card>
-                </v-flex>
-            </v-layout>
-        </v-flex>
-
-        <v-dialog v-model="modal.devolucion" max-width="800px">
-            <v-card>
-                <v-container>
-                    <v-toolbar-title>Devolucion de libros</v-toolbar-title>
-                    <v-layout wrap>
-                        <v-flex xs12 sm12>
-                            <v-list>
-                                <template v-for="(alumno,index) in alumnos">
-                                    <v-list-tile
-                                        :key="alumno.id"
-                                    >
-                                        <v-list-tile-action>
-                                            <v-checkbox
-                                                v-model="selected.devolucion"
-                                                :value="alumno.id"
-                                                :label="alumno.full_name"
-                                            ></v-checkbox>
-                                        </v-list-tile-action>
-                                    </v-list-tile>
-                                    <v-divider v-if="index + 1 < alumnos.length" class="ma-0"></v-divider>
-                                </template>
-                            </v-list>
-                        </v-flex>
-                    </v-layout>
-                </v-container>
-            <v-card-actions>
-                <v-spacer></v-spacer>
-                <v-btn color="blue darken-1" flat :loading="saving" @click="setDevolucion">Guardar</v-btn>
-            </v-card-actions>
-        </v-card>
-    </v-dialog>
-
-    <v-dialog v-model="modal.prestamo" max-height="500px" max-width="800px">
-        <v-card>
-            <v-container>
-                <v-toolbar-title>Prestamo de libros</v-toolbar-title>
-                <v-layout row>
-                    <v-flex xs12 sm12>
+                            Todos los libros prestados el día de hoy deben ser devueltos antes del <b>{{timeLimit}}</b>
+                        </v-alert>
+                    </v-flex>
+                </v-layout>
+            </v-flex>
+        </v-layout>
+        <v-layout>
+            <v-flex sm10 offset-sm1>
+                        <h2>Buscar libro</h2>
+                <v-layout class="mb-3">
+                    <v-flex sm12 md6>
                         <v-text-field
                             label="Busqueda..."
                             prepend-icon="search"
-                            v-model="search_alumno"
+                            :loading="searching"
+                            v-model="search"
+                            v-on:keyup="searchBook"
+
                         ></v-text-field>
                     </v-flex>
                 </v-layout>
-                <v-layout row>
-                    <v-flex sx12 sm12>
-                        <v-textarea
-                            label="Observaciones"
-                            rows="2"
-                            v-model="observaciones"
-                        ></v-textarea>
+                <v-layout row wrap>
+                    <v-flex pa-4 sm12 v-if="bookList.length == 0" class="">
+                        <h4 color="grey lighten-1">Sin libros para mostrar</h4>
+                    </v-flex>
+                    <v-flex pa-4 d-flex sm6 md4 lg3 v-for="libro in bookList" :key="libro.id">
+                        <v-card width="350" light color="#E7E7E7">
+
+                            <v-img
+                                height="250"
+                                
+                                :src="getBookURL(libro.imagen)"
+                            >
+                                <v-container fill-height fluid>
+                                    <v-layout fill-height>
+                                        <v-flex align-end flexbox>
+                                            <span class="headline">{{ libro.titulo }}</span>
+                                        </v-flex>
+                                    </v-layout>
+                                </v-container>
+                            </v-img>
+
+                            <v-card-title primary-title>
+                                <div>
+                                    <h4 class="mb-0 grey--text">{{ libro.autor }}</h4>
+                                    <div> {{ libro.editorial }} </div>
+                                </div>
+                            </v-card-title>
+
+                            <v-card-actions>
+                                <v-flex>
+                                    <v-btn
+                                        bottom
+                                        flat
+                                        color="orange"
+                                        :disabled="libro.existencia == 0"
+                                        @click="showPrestamo(libro)"
+                                    >Préstamo</v-btn>
+                                    <v-btn
+                                        bottom
+                                        flat
+                                        color="orange"
+                                        class="ml-0"
+                                        @click="showDevolucion(libro)"
+                                    >Devoución</v-btn>
+                                </v-flex>
+                                <v-layout justify-end>
+                                    <v-chip color="orange" text-color="white">{{ libro.existencia }}/{{libro.cantidad}}</v-chip>
+                                </v-layout>
+                            </v-card-actions>
+                        </v-card>
                     </v-flex>
                 </v-layout>
-                <v-responsive max-height="400px" class="overflow-y-display">
-                        <v-list>
-                            <template v-for="(alumno,index) in filtered_alumnos">
-                                <v-list-tile
-                                    :key="alumno.id"
-                                >
-                                    <v-list-tile-action>
-                                        <v-checkbox
-                                            v-model="selected.prestamo"
-                                            :value="alumno.id"
-                                        ></v-checkbox>
-                                    </v-list-tile-action>
-                                    <v-list-tile-content>
-                                        <v-list-tile-title>{{alumno.numero_control}}</v-list-tile-title>
-                                        <v-list-tile-sub-title>{{alumno.full_name}}</v-list-tile-sub-title>
-                                    </v-list-tile-content>
-                                </v-list-tile>
-                                <v-divider v-if="index + 1 < filtered_alumnos.length"></v-divider>
-                            </template>
-                        </v-list>
-                </v-responsive>
-            </v-container>
-            <v-card-actions>
-                <v-spacer></v-spacer>
-                <v-btn color="blue darken-1" flat :loading="saving" @click="setPrestamo">Guardar</v-btn>
-            </v-card-actions>
-        </v-card>
-    </v-dialog>
+            </v-flex>
 
-    <v-snackbar
-      v-model="snackbar.visible"
-      :bottom="true"
-    >
-      {{ error_text}}
-      <v-btn
-        color="pink"
-        flat
-        @click="snackbar = false"
-      >
-        Cerrar
-      </v-btn>
-    </v-snackbar>
+            <v-dialog v-model="modal.devolucion" max-width="800px">
+                <v-card>
+                    <v-container>
+                        <v-toolbar-title>Devolucion de libros</v-toolbar-title>
+                        <v-layout wrap>
+                            <v-flex sm12>
+                                <v-list>
+                                    <template v-for="(alumno,index) in alumnos">
+                                        <v-list-tile
+                                            :key="alumno.id"
+                                        >
+                                            <v-list-tile-action>
+                                                <v-checkbox
+                                                    v-model="selected.devolucion"
+                                                    :value="alumno.id"
+                                                    :label="alumno.full_name"
+                                                ></v-checkbox>
+                                            </v-list-tile-action>
+                                        </v-list-tile>
+                                        <v-divider v-if="index + 1 < alumnos.length" class="ma-0"></v-divider>
+                                    </template>
+                                </v-list>
+                            </v-flex>
+                        </v-layout>
+                    </v-container>
+                
+                    <v-card-actions>
+                        <v-spacer></v-spacer>
+                        <v-btn color="blue darken-1" flat :loading="saving" @click="setDevolucion">Guardar</v-btn>
+                    </v-card-actions>
+                </v-card>
+            </v-dialog>
 
-    </v-layout>
+            <v-dialog v-model="modal.prestamo" max-height="500px" max-width="800px">
+                <v-card>
+                    <v-container>
+                        <v-toolbar-title>Prestamo de libros</v-toolbar-title>
+                        <v-layout wrap>
+                            <v-flex sm12>
+                                <v-textarea
+                                    label="Observaciones"
+                                    rows="2"
+                                    v-model="observaciones"
+                                ></v-textarea>
+                            </v-flex>
+                        </v-layout>
+                        <v-responsive max-height="400px" class="overflow-y-display">
+                                <v-list>
+                                    <template v-for="(alumno,index) in filtered_alumnos">
+                                        <v-list-tile
+                                            :key="alumno.id"
+                                        >
+                                            <v-list-tile-action>
+                                                <v-checkbox
+                                                    v-model="selected.prestamo"
+                                                    :value="alumno.id"
+                                                ></v-checkbox>
+                                            </v-list-tile-action>
+                                            <v-list-tile-content>
+                                                <v-list-tile-title>{{alumno.numero_control}}</v-list-tile-title>
+                                                <v-list-tile-sub-title>{{alumno.full_name}}</v-list-tile-sub-title>
+                                            </v-list-tile-content>
+                                        </v-list-tile>
+                                        <v-divider v-if="index + 1 < filtered_alumnos.length"></v-divider>
+                                    </template>
+                                </v-list>
+                        </v-responsive>
+                        <v-layout wrap>
+                            <v-flex sm12>
+                                <v-text-field
+                                    label="Busqueda..."
+                                    prepend-icon="search"
+                                    v-model="search_alumno"
+                                ></v-text-field>
+                            </v-flex>
+                        </v-layout>
+                    </v-container>
+                    <v-card-actions>
+                        <v-spacer></v-spacer>
+                        <v-btn color="blue darken-1" flat :loading="saving" @click="setPrestamo">Guardar</v-btn>
+                    </v-card-actions>
+                </v-card>
+            </v-dialog>
+
+            <v-snackbar
+            v-model="snackbar.visible"
+            :bottom="true"
+            >
+                {{ error_text}}
+                <v-btn
+                    color="pink"
+                    flat
+                    @click="snackbar = false"
+                >
+                    Cerrar
+                </v-btn>
+            </v-snackbar>
+
+        </v-layout>
+    </div>
 </template>
 
 <script>
@@ -219,6 +236,12 @@
             },
             error_text() {
                 return this.snackbar.prestamo ? 'No se cuenta con suficientes libros para prestar' : 'Error en el servidor'
+            },
+            timeLimit() {
+                let fecha = new Date()
+                fecha.setDate(fecha.getDate() + 5)
+                let fechaFormateada = this.formatDate(fecha)
+                return fechaFormateada;
             }
         },
         methods: {
@@ -248,11 +271,19 @@
             showPrestamo(libro) {
                 this.elLibro = libro
                 this.modal.prestamo = true
+                this.selected =  {
+                    devolucion: [],
+                    prestamo: []
+                }
             },
             showDevolucion(libro) {
                 this.elLibro = libro
                 this.alumnos = libro.alumnos_pendientes
                 this.modal.devolucion = true
+                this.selected =  {
+                    devolucion: [],
+                    prestamo: []
+                }
             },
             async getAllAlumnos() {
                 const {data} = await axios.get('/api/catalogos/alumnos')
@@ -291,6 +322,16 @@
                 return array.map(function(obj) {
                     return obj[key];
                 });
+            },
+            formatDate(fecha) {
+                let dia = (fecha.getDate() > 10 ) ? fecha.getDate() : `0${fecha.getDate()}`
+                let mes = fecha.getMonth()
+                let año = fecha.getFullYear()
+
+                let meses = ['','Enero','Febrero','Marzo','Abril','Mayo','Junio','Julio','Agosto','Septiembre','Octubre','Noviembre','Diciembre']
+
+                let fechaFormateada = `${dia} de ${meses[mes]} del ${año}`
+                return fechaFormateada
             }
         }
     }

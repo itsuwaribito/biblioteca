@@ -47,9 +47,12 @@ class LibrosController extends Controller
             $libro->existencia = $existencia;
             $libro->save();
             
+            $hoy = \Carbon\Carbon::now();
+            $limite = $hoy->addDays(5);
             foreach ($request->alumnos as $alumno) {
                 Prestamo::create([
-                    'fecha_prestamo' => \Carbon\Carbon::now(),
+                    'fecha_prestamo' => $hoy,
+                    'fecha_devolucion_limite' => $limite,
                     'libros_id' => $id,
                     'alumnos_id' => $alumno,
                     'observaciones' => $request->observaciones
@@ -72,7 +75,10 @@ class LibrosController extends Controller
             $libro->existencia = intval($libro->existencia) + count($request->alumnos);
             $libro->save();
         });
+        $prestamos = Prestamo::where('libros_id', $id)
+            ->whereIn('alumnos_id',$request->alumnos)
+            ->get();
 
-        return $libro;
+        return $prestamos;
     }
 }
